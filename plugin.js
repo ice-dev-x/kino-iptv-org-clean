@@ -1,19 +1,23 @@
 const M3U_URL = "https://raw.githubusercontent.com/ice-dev-x/iptv_org_clean/refs/heads/main/latam.m3u";
 
-// Función central: Descarga y clasifica la lista una sola vez
-async function procesarLista() {
+// Memoria caché para no descargar la lista repetidas veces al cambiar de pestaña
+let cachedCategorias = null;
+let lastFetch = 0;
+
+async function getCategorias() {
+  // Si la lista ya se descargó hace menos de 5 minutos, usamos la guardada
+  if (cachedCategorias && (Date.now() - lastFetch < 300000)) {
+    return cachedCategorias;
+  }
+
   const res = await kino.fetch(M3U_URL);
-  if (!res.ok) return { propios: [], latino: [], espana: [], usa: [] };
+  if (!res.ok) return [];
   
   const text = await res.text();
   const lines = text.split('\n');
   
-  const categorias = {
-    propios: [],
-    latino: [],
-    espana: [],
-    usa: []
-  };
+  // Usamos un Map para ir agrupando canales dinámicamente por su país
+  const categoriasMap = new Map();
   
   let currentItem = null;
   
@@ -30,62 +34,65 @@ async function procesarLista() {
         id: `ch-${i}`,
         title: titleMatch ? titleMatch.trim() : "Canal Desconocido",
         kind: "live",
-        poster: logoMatch ? logoMatch[1] : "https://placehold.co/300x450/222222/ffffff?text=TV",
-        _group: groupMatch ? groupMatch[1].toLowerCase() : "" 
+        poster: logoMatch ? logoMatch[1] : "https://raw.githubusercontent.com/ice-dev-x/kino-iptv-org-clean/main/icon.png",
+        // Guardamos el nombre original del grupo (ej. "Ecuador", "México")
+        _groupName: groupMatch ? groupMatch[1].trim() : "Otros" 
       };
       
     } else if (line.startsWith('http') && currentItem) {
       currentItem.ref = line;
       
-      const titleLower = currentItem.title.toLowerCase();
-      const groupLower = currentItem._group;
+      const groupName = currentItem._groupName;
+      
+      // Creamos un ID seguro para Kino sin tildes ni espacios (ej: "Costa Rica" -> "costa-rica")
+      const groupId = groupName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '-');
 
-      if (groupLower.includes('propio') || groupLower.includes('cmj')) {
-        categorias.propios.push(currentItem);
-      } else if (groupLower.includes('latino') || groupLower.includes('mexico') || groupLower.includes('ecuador') || titleLower.includes('latino')) {
-        categorias.latino.push(currentItem);
-      } else if (groupLower.includes('españa') || groupLower.includes('spain') || titleLower.includes('españa')) {
-        categorias.espana.push(currentItem);
-      } else if (groupLower.includes('usa') || groupLower.includes('english') || titleLower.includes('usa')) {
-        categorias.usa.push(currentItem);
-      } else {
-        categorias.latino.push(currentItem);
+      // Si el país no existe aún en nuestro mapa, lo creamos
+      if (!categoriasMap.has(groupId)) {
+        categoriasMap.set(groupId, { id: groupId, title: groupName, items: [] });
       }
+      
+      // Borramos la propiedad temporal y metemos el canal en su país
+      delete currentItem._groupName;
+      categoriasMap.get(groupId).items.push(currentItem);
       
       currentItem = null;
     }
   }
-  return categorias;
+  
+  // Convertimos el mapa a un array, lo guardamos en caché y lo devolvemos
+  cachedCategorias = Array.from(categoriasMap.values());
+  lastFetch = Date.now();
+  return cachedCategorias;
 }
 
-// 1. Capacidad HOME: Muestra filas en la pantalla principal
+// 1. Capacidad HOME: Crea una fila por cada país en el inicio
 export async function home() {
-  const cat = await procesarLista();
-  const rows = [];
-  if (cat.propios.length > 0) rows.push({ id: "row-propios", title: "⭐ Mis Canales Propios", items: cat.propios });
-  if (cat.latino.length > 0) rows.push({ id: "row-latino", title: "🌎 TV Latino", items: cat.latino });
-  if (cat.espana.length > 0) rows.push({ id: "row-espana", title: "🇪🇸 TV España", items: cat.espana });
-  if (cat.usa.length > 0) rows.push({ id: "row-usa", title: "🇺🇸 TV USA", items: cat.usa });
-  return rows;
+  const categorias = await getCategorias();
+  return categorias.map(cat => ({
+    id: `row-${cat.id}`,
+    title: cat.title,
+    items: cat.items
+  }));
 }
 
-// 2. Capacidad CHANNELS: Define las categorías de la pestaña "En vivo"
+// 2. Capacidad CHANNELS: Crea una pestaña por cada país en "En vivo"
 export async function liveCategories() {
-  return [
-    { id: "propios", title: "Mis Canales" },
-    { id: "latino", title: "TV Latino" },
-    { id: "espana", title: "TV España" },
-    { id: "usa", title: "TV USA" }
-  ];
+  const categorias = await getCategorias();
+  return categorias.map(cat => ({
+    id: cat.id,
+    title: cat.title
+  }));
 }
 
-// 3. Capacidad CHANNELS: Devuelve los canales cuando el usuario abre una categoría
+// 3. Capacidad CHANNELS: Devuelve los canales del país seleccionado
 export async function liveChannels({ categoryId }) {
-  const cat = await procesarLista();
-  return { items: cat[categoryId] || [] };
+  const categorias = await getCategorias();
+  const categoria = categorias.find(c => c.id === categoryId);
+  return { items: categoria ? categoria.items : [] };
 }
 
-// 4. Capacidad RESOLVE: Extrae el reproductor VLC
+// 4. Capacidad RESOLVE: Extrae el reproductor
 export async function resolve(ref) {
   return {
     url: ref,
