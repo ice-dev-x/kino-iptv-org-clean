@@ -1,6 +1,6 @@
 {
-  "id": "iptv-org-clean-cmj",
-  "name": "TV Global Iptv ORG LAT/ESP/USA",
+  "id": "iptv-org",
+  "name": "TV Global",
   "version": "1.0.0",
   "apiVersion": 1,
   "description": "Canales en vivo: Latino, España, USA y Propios",
