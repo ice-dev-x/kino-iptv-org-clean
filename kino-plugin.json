@@ -1,7 +1,7 @@
 {
   "id": "iptv-org",
   "name": "TV Global",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "apiVersion": 3,
   "description": "Canales en vivo: Latino, España, USA y Propios",
   "author": "ice-dev-x",
