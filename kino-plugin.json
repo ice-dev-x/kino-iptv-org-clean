@@ -1,8 +1,8 @@
 {
   "id": "iptv-org",
   "name": "TV Global",
-  "version": "1.0.5",
-  "apiVersion": 1,
+  "version": "1.0.9",
+  "apiVersion": 3,
   "description": "Canales en vivo: Latino, España, USA y Propios",
   "author": "ice-dev-x",
   "icon": "icon.png",
@@ -12,7 +12,9 @@
   ],
   "capabilities": [
     "home",
-    "resolve"
+    "resolve",
+    "channels"
   ],
+  "liveStreamHosts": "any",
   "color": "#00FF7F"
 }
