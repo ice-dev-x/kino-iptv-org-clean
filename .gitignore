@@ -1,0 +1,14 @@
+# Dependencias y registros
+node_modules/
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+
+# Herramientas de prueba locales
+sdk/
+test.js
+package.json
+
+# Archivos ocultos del sistema operativo
+.DS_Store
+Thumbs.db

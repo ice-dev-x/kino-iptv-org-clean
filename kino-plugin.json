@@ -1,0 +1,18 @@
+{
+  "id": "iptv-org-clean-cmj",
+  "name": "TV Global Iptv ORG LAT/ESP/USA by Ice-Dev-X",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Canales en vivo: Latino, España, USA y Propios",
+  "author": "ice-dev-x",
+  "icon": "icon.png",
+  "entry": "plugin.js",
+  "hosts": [
+    "raw.githubusercontent.com"
+  ],
+  "capabilities": [
+    "home",
+    "resolve"
+  ],
+  "color": "#00FF7F"
+}
