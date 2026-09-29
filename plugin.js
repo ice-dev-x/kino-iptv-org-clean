@@ -34,7 +34,7 @@ export async function home() {
         id: `ch-${i}`,
         title: titleMatch ? titleMatch.trim() : "Canal Desconocido",
         kind: "tv",
-        poster: logoMatch ? logoMatch[1] : null,
+        poster: logoMatch ? logoMatch[1] : "https://placehold.co/300x450/222222/ffffff?text=TV",
         _group: groupMatch ? groupMatch[1].toLowerCase() : "" 
       };
       
