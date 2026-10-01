@@ -1,9 +1,9 @@
 {
   "id": "iptv-org",
-  "name": "TV Global",
-  "version": "1.1.0",
+  "name": "TV+",
+  "version": "1.2.0",
   "apiVersion": 3,
-  "description": "Canales en vivo: Latino, España, USA y Propios",
+  "description": "Canales en vivo: Latino, España, USA y más",
   "author": "ice-dev-x",
   "icon": "icon.png",
   "entry": "plugin.js",
