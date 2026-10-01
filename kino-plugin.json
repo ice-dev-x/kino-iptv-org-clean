@@ -1,7 +1,7 @@
 {
   "id": "iptv-org",
   "name": "TV+",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "apiVersion": 3,
   "description": "Canales en vivo: Latino, España, USA y más",
   "author": "ice-dev-x",
@@ -16,5 +16,5 @@
     "channels"
   ],
   "liveStreamHosts": "any",
-  "color": "#00FF7F"
+  "color": "#a60c30"
 }

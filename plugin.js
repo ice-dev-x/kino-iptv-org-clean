@@ -34,7 +34,7 @@ async function getCategorias() {
         id: `ch-${i}`,
         title: titleMatch ? titleMatch.trim() : "Canal Desconocido",
         kind: "live",
-        poster: logoMatch ? logoMatch[1] : "https://raw.githubusercontent.com/ice-dev-x/kino-iptv-org-clean/main/icon.png",
+        poster: logoMatch ? logoMatch[1] : "https://placehold.co/300x450/222222/ffffff?text=TV",
         // Guardamos el nombre original del grupo (ej. "Ecuador", "México")
         _groupName: groupMatch ? groupMatch[1].trim() : "Otros" 
       };
