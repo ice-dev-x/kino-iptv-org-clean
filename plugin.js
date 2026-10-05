@@ -94,10 +94,23 @@ export async function liveChannels({ categoryId }) {
 
 // 4. Capacidad RESOLVE: Extrae el reproductor
 export async function resolve(ref) {
+  let headers = {};
+
+  // Si el enlace pertenece a qaotic.net, le inyectamos el User-Agent de navegador móvil y su referer
+  if (ref.includes("qaotic.net")) {
+    headers = {
+      "User-Agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+      "Referer": "https://www.americatv.com.ar/"
+    };
+  } else {
+    // Un User-Agent genérico por defecto para el resto de canales de la lista
+    headers = {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    };
+  }
+
   return {
     url: ref,
-    headers: {
-      "User-Agent": "VLC/3.0.16 LibVLC/3.0.16"
-    }
+    headers: headers
   };
 }
