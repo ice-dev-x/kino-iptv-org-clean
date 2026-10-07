@@ -4,6 +4,7 @@ npm-debug.log*
 yarn-error.log*
 yarn-debug.log*
 private.pem
+public.pem
 
 # Herramientas de prueba locales
 sdk/

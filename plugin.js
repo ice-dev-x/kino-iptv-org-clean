@@ -85,14 +85,7 @@ async function getCategorias() {
   }
 }
 
-export async function home() {
-  const categorias = await getCategorias();
-  return categorias.map(cat => ({
-    id: `row-${cat.id}`,
-    title: cat.title,
-    items: cat.items
-  }));
-}
+
 
 export async function liveCategories() {
   const categorias = await getCategorias();
