@@ -85,7 +85,6 @@ async function getCategorias() {
   }
 }
 
-JavaScript
 
 
 export async function home() {
