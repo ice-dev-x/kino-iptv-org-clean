@@ -1,7 +1,7 @@
 {
   "id": "iptv-org",
   "name": "TV+",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "apiVersion": 3,
   "description": "Canales en vivo: Latino, España, USA y más",
   "author": "ice-dev-x",
@@ -11,7 +11,8 @@
     "raw.githubusercontent.com",
     "qaotic.net",
     "americatv.com.ar",
-    "edge-access.net"
+    "edge-access.net",
+    "a24.com"
     
   ],
   "capabilities": [
