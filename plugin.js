@@ -85,16 +85,21 @@ async function getCategorias() {
   }
 }
 
-// 1. Capacidad HOME: Crea una fila por cada país en el inicio
+JavaScript
+
+
 export async function home() {
   const categorias = await getCategorias();
+  
+  // Mantenemos el Home, pero limitamos los carruseles a 20 canales (.slice(0, 20))
+  // para que Kino no colapse por falta de memoria en la pantalla principal.
+  // Cuando el usuario entre a la sección de "Categorías", sí verá todos los canales completos.
   return categorias.map(cat => ({
     id: `row-${cat.id}`,
     title: cat.title,
-    items: cat.items
+    items: cat.items.slice(0, 20) 
   }));
 }
-
 
 export async function liveCategories() {
   const categorias = await getCategorias();
