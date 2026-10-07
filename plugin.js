@@ -1,4 +1,6 @@
 const M3U_URL = "https://raw.githubusercontent.com/ice-dev-x/iptv_org_clean/refs/heads/main/latam.m3u";
+// URL de respaldo usando tu propio icono del repositorio
+const DEFAULT_LOGO = "https://raw.githubusercontent.com/ice-dev-x/kino-iptv-org-clean/refs/heads/main/icon.png";
 
 // Memoria caché para no descargar la lista repetidas veces al cambiar de pestaña
 let cachedCategorias = null;
@@ -28,18 +30,32 @@ async function getCategorias() {
         const groupMatch = line.match(/group-title="([^"]+)"/i);
         const titleMatch = line.split(',').pop();
         
+        const channelTitle = titleMatch ? titleMatch.trim() : "Canal Desconocido";
+        let logoUrl = logoMatch ? logoMatch[1] : "";
+
+        // Si la lista no trae logo o viene vacío, intentamos con el repositorio público de iptv-org
+        if (!logoUrl || logoUrl.trim() === "") {
+          const cleanName = channelTitle
+            .toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]/g, '');
+          
+          // Nota: Si el servidor externo no encuentra la imagen, el reproductor de Kino 
+          // recurrirá o puedes usar tu icono por defecto si prefieres saltarte el repositorio externo.
+          logoUrl = `https://iptv-org.github.io/iptv/logos/${cleanName}.png`;
+        }
+        
         currentItem = {
-          title: titleMatch ? titleMatch.trim() : "Canal Desconocido",
+          title: channelTitle,
           kind: "live",
-          // SOLUCIÓN 3: Se cambia 'poster' por 'logo'
-          logo: logoMatch ? logoMatch[1] : "https://placehold.co/300x450/222222/ffffff?text=TV",
+          logo: logoUrl,
           _groupName: groupMatch ? groupMatch[1].trim() : "Otros" 
         };
         
       } else if (line.startsWith('http') && currentItem) {
         currentItem.ref = line;
         
-        // SOLUCIÓN 1: ID estable basado en un hash de la URL del canal en lugar de su posición (i)
+        // ID estable basado en un hash de la URL
         currentItem.id = "ch-" + kino.crypto.hash("sha1", line).slice(0, 16);
         
         const groupName = currentItem._groupName;
@@ -59,13 +75,11 @@ async function getCategorias() {
     cachedCategorias = Array.from(categoriasMap.values());
     lastFetch = Date.now();
     
-    // SOLUCIÓN 2: Guardamos la lista validada en almacenamiento persistente
     await kino.storage.set("backup_m3u_latam", cachedCategorias);
     
     return cachedCategorias;
     
   } catch (error) {
-    // Si la descarga falla (sin internet o error 404), devolvemos la última copia funcional
     const backup = await kino.storage.get("backup_m3u_latam");
     return backup ? backup : [];
   }
