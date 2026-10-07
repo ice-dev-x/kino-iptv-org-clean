@@ -1,8 +1,8 @@
 {
   "id": "iptv-org",
   "name": "TV+",
-  "version": "1.5.5",
-  "apiVersion": 5,
+  "version": "1.5.6",
+  "apiVersion": 4,
   "description": "Canales en vivo: Latino, España, USA, Pluto TV y más",
   "author": "ice-dev-x",
   "icon": "icon.png",
@@ -20,11 +20,8 @@
     "channels"
   ],
   "liveStreamHosts": "any",
-  "color": "#a60c30",
-  "signature": {
-    "authorKey": "478bfefda17ef70f5e1f422865084e1291c573b7cc09d214c8cc8226caef466e",
-    "value": "8275dc5a88abef844ed9123880640d508fb1af5218f203081716675ffe7fa6919155be627c3c6dc06ebee8637ef3e850840ff29160dc9e6a358ee21ce107522bfe52fda6de3c99a10bc7b08379a04174b231b80046101fbf7c2e6d7ccfa6ec1219b4ef2b7c26266f18602a20a75059ed217cf8ac2322a0e4b362194093ab5545622963cbe67742749d244de524b6de102da590423357667922e175cf1928c3bc5f5595660b7c273f96adf8dffcb3b8ab48ea1dc75a34dac7de589a957dd27299cf7943a38b136d79f264418b3758e49b8bc6b6b647c999f1cebcd9e013fc546b8a15cb663966dac346c7cba39d8276aa611216bcc5b102fac4b3344b32540eb6"
-  }
+  "color": "#a60c30"
+   }
 
   
-}
+
