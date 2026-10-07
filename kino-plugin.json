@@ -1,15 +1,16 @@
 {
   "id": "iptv-org",
   "name": "TV+",
-  "version": "1.5.2",
-  "apiVersion": 3,
+  "version": "1.5.3",
+  "apiVersion": 4,
   "description": "Canales en vivo: Latino, España, USA y más",
   "author": "ice-dev-x",
   "icon": "icon.png",
   "entry": "plugin.js",
   "hosts": [
     "raw.githubusercontent.com",
-    "qaotic.net"
+    "qaotic.net",
+    "americatv.com.ar"
   ],
   "capabilities": [
     "home",
