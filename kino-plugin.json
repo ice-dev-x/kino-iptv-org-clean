@@ -1,9 +1,9 @@
 {
   "id": "iptv-org",
   "name": "TV+",
-  "version": "1.5.6",
-  "apiVersion": 4,
-  "description": "Canales en vivo: Latino, España, USA, Pluto TV y más",
+  "version": "1.6.0",
+  "apiVersion": 3,
+  "description": "Canales en vivo: Latino, España, USA y más",
   "author": "ice-dev-x",
   "icon": "icon.png",
   "entry": "plugin.js",
@@ -21,7 +21,7 @@
   ],
   "liveStreamHosts": "any",
   "color": "#a60c30"
-   }
-
   
-
+  
+  
+}

@@ -85,6 +85,15 @@ async function getCategorias() {
   }
 }
 
+// 1. Capacidad HOME: Crea una fila por cada país en el inicio
+export async function home() {
+  const categorias = await getCategorias();
+  return categorias.map(cat => ({
+    id: `row-${cat.id}`,
+    title: cat.title,
+    items: cat.items
+  }));
+}
 
 
 export async function liveCategories() {
