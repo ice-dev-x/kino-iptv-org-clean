@@ -53,12 +53,22 @@ export async function liveChannels({ categoryId }) {
 export async function resolve(ref) {
   let headers = {};
 
-  if (ref.includes("qaotic.net")) {
+  // 1. Si el enlace es de A24
+  if (ref.includes("a24")) {
+    headers = {
+      "User-Agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+      "Referer": "https://www.a24.com/"
+    };
+  } 
+  // 2. Si el enlace es de América TV (qaotic)
+  else if (ref.includes("qaotic.net")) {
     headers = {
       "User-Agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
       "Referer": "https://www.americatv.com.ar/"
     };
-  } else {
+  } 
+  // 3. Para todos los demás canales normales
+  else {
     headers = {
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     };
